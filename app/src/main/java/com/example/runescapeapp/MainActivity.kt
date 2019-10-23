@@ -6,14 +6,22 @@ import android.util.Log
 import android.view.ViewTreeObserver
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
+import com.example.runescapeapp.RunescapeGateway.RunescapeGateway
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CoroutineScope {
 
     // used to measure height of the device WITHOUT the nav bar //
     private lateinit var constraintLayout: ConstraintLayout
+
+    private val job = Job()
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,19 +30,17 @@ class MainActivity : AppCompatActivity() {
         constraintLayout = findViewById(R.id.lock_screen)
         val linearLayout = findViewById<LinearLayout>(R.id.lock_background)
         createBackground(linearLayout)
-
-        val drawable = ContextCompat.getDrawable(this, R.drawable.cracked_background)
-        Log.e("HEIGHT", drawable?.intrinsicHeight.toString())
-        Log.e("WIDTH", drawable?.intrinsicWidth.toString())
-
-        val displayMetrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
-        Log.e("device height", displayMetrics.heightPixels.toString())
-        Log.e("device width", displayMetrics.widthPixels.toString())
     }
 
-    override fun onPostCreate(savedInstanceState: Bundle?) {
-        super.onPostCreate(savedInstanceState)
+    override fun onStart() {
+        super.onStart()
+        val gateway = RunescapeGateway()
+        launch(Dispatchers.IO) {
+            val response = gateway.numberUsersOnline()
+            withContext(Dispatchers.Main) {
+                findViewById<TextView>(R.id.text).text = response
+            }
+        }
     }
 
     private fun createBackground(linearLayout: LinearLayout) {
