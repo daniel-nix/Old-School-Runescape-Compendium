@@ -51,13 +51,17 @@
         app:layout_constraintRight_toRightOf="@id/right_guide"
         app:layout_constraintTop_toBottomOf="@id/top_guide"
         app:layout_constraintBottom_toTopOf="@id/max_height"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:clickable="true"
+        android:focusableInTouchMode="true"
+        android:focusable="true">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:text="There are 25 users playing right now!"
-            android:textAlignment="center"/>
+            android:textAlignment="center"
+            android:id="@+id/num_users"/>
 
         <Space
             android:layout_width="wrap_content"
@@ -68,7 +72,6 @@
             android:layout_width="match_parent"
             android:layout_height="35dp"
             android:background="@drawable/login_background"
-            android:focusable="true"
             android:hint="Username"
             android:paddingLeft="3dp"
             android:id="@+id/username_text" />
@@ -77,9 +80,10 @@
             android:layout_width="65dp"
             android:layout_height="25dp"
             android:layout_gravity="center"
-            android:background="@drawable/login_background"
+            android:background="@drawable/login_background_button"
             android:layout_marginTop="40dp"
-            android:text="SUBMIT"/>
+            android:text="SUBMIT"
+            android:id="@+id/submit_button"/>
 
         <Space
             android:layout_width="wrap_content"
