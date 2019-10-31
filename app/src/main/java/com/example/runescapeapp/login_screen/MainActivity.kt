@@ -17,6 +17,8 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
 import android.view.inputmethod.InputMethodManager
+import com.example.runescapeapp.item.JsonItemParser
+import com.example.runescapeapp.item.item_trie.ItemTrieBuilder
 import com.example.runescapeapp.main_dashboard.MainDashboard
 
 
@@ -38,6 +40,18 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         setSubmitListener()
     }
 
+    override fun onStart() {
+        super.onStart()
+        launch(Dispatchers.IO) {
+            val itemList = JsonItemParser(applicationContext).parse()
+            val itemTrieBuilder = ItemTrieBuilder.getInstance()
+            itemList.forEach {
+                itemTrieBuilder.addItem(it.first, it.second)
+            }
+            itemTrieBuilder.getAlikeNames("Steel")
+        }
+    }
+
     private fun createLoginBackground() {
         val constraintLayout = findViewById<ConstraintLayout>(R.id.login_screen)
         val linearLayout = findViewById<LinearLayout>(R.id.login_background)
@@ -57,7 +71,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     private fun setSubmitListener() {
         val submitButton = findViewById<View>(R.id.login_overlay).findViewById<TextView>(R.id.submit_button)
         val textBox = findViewById<View>(R.id.login_overlay).findViewById<TextView>(R.id.username_text)
-        submitButton.setOnClickListener { view: View? ->
+        submitButton.setOnClickListener {
             val intent = Intent(this, MainDashboard::class.java)
             intent.putExtra("username", textBox.text.toString())
             startActivity(intent)
