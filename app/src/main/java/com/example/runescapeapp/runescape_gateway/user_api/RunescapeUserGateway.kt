@@ -1,9 +1,10 @@
-package com.example.runescapeapp.runescape_gateway
+package com.example.runescapeapp.runescape_gateway.user_api
 
 import androidx.annotation.UiThread
 import com.example.runescapeapp.constants.Constant
 import com.example.runescapeapp.player.Player
 import com.example.runescapeapp.player.Score
+import com.example.runescapeapp.runescape_gateway.HttpConnection
 import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -13,7 +14,7 @@ import kotlin.coroutines.CoroutineContext
 
 private const val URL_NUM_USERS_ONLINE = "http://www.runescape.com/player_count.js?varname=iPlayerCount&callback=jQuery000000000000000_0000000000&_=0"
 
-class RunescapeGateway : RunescapeAPI, CoroutineScope {
+class RunescapeUserGateway : RunescapeUserAPI, CoroutineScope {
 
     private val NUM_USERS_REGEX = Regex("""\(([0-9]+)\);""")
 
@@ -23,32 +24,13 @@ class RunescapeGateway : RunescapeAPI, CoroutineScope {
 
     @UiThread
     override suspend fun numberUsersOnline(): Int = withContext(Dispatchers.IO) {
-        val connection = URL(URL_NUM_USERS_ONLINE).openConnection() as HttpURLConnection
-        connection.requestMethod = "GET"
-        connection.setRequestProperty("User-Agent", "Mozilla/5.0")
+        val connection = HttpConnection.connect(URL_NUM_USERS_ONLINE)
 
-        val response = getResponse(connection)
+        val response = HttpConnection.getResponse(connection)
         connection.disconnect()
 
         val result = NUM_USERS_REGEX.find(response, 0)
         result?.groupValues?.get(1)?.toInt() ?: 0
-    }
-
-    private fun getResponse(connection: HttpURLConnection): String {
-        val readIn = BufferedReader(InputStreamReader(connection.inputStream))
-        val response = StringBuilder()
-        var line = readIn.readLine()
-        var first = true
-        while (line != null) {
-            if(first) {
-                response.append(line)
-                first = !first
-            } else {
-                response.append(" $line")
-            }
-            line = readIn.readLine()
-        }
-        return response.toString()
     }
 
     override suspend fun fetchPlayer(username: String): Player =
@@ -60,12 +42,10 @@ class RunescapeGateway : RunescapeAPI, CoroutineScope {
         }
 
     private suspend fun fetchScores(url: String): HashMap<String, Score> = withContext(Dispatchers.IO) {
-        val connection = URL(url).openConnection() as HttpURLConnection
-        connection.requestMethod = "GET"
-        connection.setRequestProperty("User-Agent", "Mozilla/5.0")
+        val connection = HttpConnection.connect(url)
 
         if(connection.responseCode == 200) {
-            val response = getResponse(connection)
+            val response = HttpConnection.getResponse(connection)
             connection.disconnect()
 
             assembleMap(response)

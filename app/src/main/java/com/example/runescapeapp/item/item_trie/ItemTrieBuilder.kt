@@ -2,14 +2,13 @@ package com.example.runescapeapp.item.item_trie
 
 class ItemTrieBuilder {
 
-    // there is no need for multiple tries //
+    // there is no need for multiple tries for runescape items //
     companion object {
         private var builder: ItemTrieBuilder? = null
 
         fun getInstance(): ItemTrieBuilder {
             if(builder == null)
-                builder =
-                    ItemTrieBuilder()
+                builder = ItemTrieBuilder()
             return builder!!
         }
     }
@@ -55,16 +54,16 @@ class ItemTrieBuilder {
                 trieNode = trieNode.children[this]!!
             }
         } // go through all of the characters of partial name to start at the end
-        displayTree(trieNode, partialName, nameList)
+        displayTreeToList(trieNode, partialName, nameList)
         return nameList
     }
 
-    private fun displayTree(trieNode: ItemTrie, nameString: String, nameList: ArrayList<Pair<String, Long>>) {
+    private fun displayTreeToList(trieNode: ItemTrie, nameString: String, nameList: ArrayList<Pair<String, Long>>) {
         if(trieNode.endOfName) {
             nameList.add(Pair(nameString, trieNode.itemId))
         }
         for(child in trieNode.children) {
-            displayTree(trieNode.children[child.key]!!, nameString + child.key, nameList)
+            displayTreeToList(trieNode.children[child.key]!!, nameString + child.key, nameList)
         }
     }
 }

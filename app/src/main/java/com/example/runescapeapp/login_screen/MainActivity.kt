@@ -16,10 +16,12 @@ import android.widget.EditText
 import android.content.Context
 import android.content.Intent
 import android.graphics.Rect
+import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import com.example.runescapeapp.item.JsonItemParser
 import com.example.runescapeapp.item.item_trie.ItemTrieBuilder
 import com.example.runescapeapp.main_dashboard.MainDashboard
+import com.example.runescapeapp.runescape_gateway.item_api.RunescapeItemGateway
 
 
 class MainActivity : AppCompatActivity(), CoroutineScope {
@@ -48,7 +50,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             itemList.forEach {
                 itemTrieBuilder.addItem(it.first, it.second)
             }
-            itemTrieBuilder.getAlikeNames("Steel")
+
+            val gateway = RunescapeItemGateway()
+            val item = gateway.fetchItemDetails(itemTrieBuilder.getItem("Ruby"))
+            Log.e("", "")
         }
     }
 

@@ -1,6 +1,7 @@
 package com.example.runescapeapp.constants
 
 object Constant {
+
     val PLAYER_SKILLS = arrayOf(
         "attack", "defense", "strength", "hitpoints",
         "ranged", "prayer", "magic", "cooking", "woodcutting",
@@ -10,7 +11,10 @@ object Constant {
         "construction"
     )
 
-    val BASE_URL = "https://services.runescape.com"
+    val GE_ITEM_DETAIL = "http://services.runescape.com/m=itemdb_oldschool/api/catalogue/detail.json?item="
+    val GE_ITEM_DAILY_VALUE = "http://services.runescape.com/m=itemdb_oldschool/api/graph/" // add .json after itemId
+
+    val USER_BASE_URL = "https://services.runescape.com"
 
     val SCORE_URLS = hashMapOf(
         ScoreType.HIGHSCORE to "/m=hiscore_oldschool/index_lite.ws",
@@ -26,5 +30,5 @@ object Constant {
         DEADMAN, ULTIMATE, SEASONAL
     }
 
-    fun getUrl(scoreType: ScoreType): String = BASE_URL + SCORE_URLS[scoreType]
+    fun getUrl(scoreType: ScoreType): String = USER_BASE_URL + SCORE_URLS[scoreType]
 }
