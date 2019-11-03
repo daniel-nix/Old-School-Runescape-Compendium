@@ -8,7 +8,11 @@ class ItemTrieBuilder {
 
         fun getInstance(): ItemTrieBuilder {
             if(builder == null)
-                builder = ItemTrieBuilder()
+                synchronized(ItemTrieBuilder::class) {
+                    // just in case another thread didn't synchronize before current one //
+                    if(builder == null)
+                        builder = ItemTrieBuilder()
+                }
             return builder!!
         }
     }

@@ -42,21 +42,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         setSubmitListener()
     }
 
-    override fun onStart() {
-        super.onStart()
-        launch(Dispatchers.IO) {
-            val itemList = JsonItemParser(applicationContext).parse()
-            val itemTrieBuilder = ItemTrieBuilder.getInstance()
-            itemList.forEach {
-                itemTrieBuilder.addItem(it.first, it.second)
-            }
-
-            val gateway = RunescapeItemGateway()
-            val item = gateway.fetchItemDetails(itemTrieBuilder.getItem("Ruby"))
-            Log.e("", "")
-        }
-    }
-
     private fun createLoginBackground() {
         val constraintLayout = findViewById<ConstraintLayout>(R.id.login_screen)
         val linearLayout = findViewById<LinearLayout>(R.id.login_background)

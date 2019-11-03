@@ -7,6 +7,8 @@ import org.json.simple.parser.JSONParser
 
 class JsonItemParser(private val context: Context) {
 
+    private val itemJson = "names.json"
+
     // returns a list of 'ItemName' and 'ItemId'
     fun parse(): List<Pair<String, Long>> {
         val itemList = ArrayList<Pair<String, Long>>(3011)
@@ -19,7 +21,7 @@ class JsonItemParser(private val context: Context) {
 
     private fun getJSONFromFile(): JSONArray {
         val jsonParser = JSONParser()
-        val bufferedReader = context.assets.open("names.json").bufferedReader()
+        val bufferedReader = context.assets.open(itemJson).bufferedReader()
 
         val jsonArray = jsonParser.parse(bufferedReader) as JSONArray
         bufferedReader.close()

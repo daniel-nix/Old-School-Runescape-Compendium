@@ -1,14 +1,14 @@
 package com.example.runescapeapp.main_dashboard
 
-import android.app.Activity
 import android.os.Bundle
-import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import com.example.runescapeapp.main_dashboard.viewmodel.MainDashboardViewModel
 import com.example.runescapeapp.main_dashboard.viewmodel.MainDashboardViewModelFactory
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
+import com.example.runescapeapp.R
 
-class MainDashboard: Activity(), CoroutineScope {
+class MainDashboard: AppCompatActivity(), CoroutineScope {
 
     private val job = Job()
     override val coroutineContext: CoroutineContext
@@ -19,7 +19,10 @@ class MainDashboard: Activity(), CoroutineScope {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainDashboardViewModel = MainDashboardViewModelFactory.getInstance(applicationContext)
+        setContentView(R.layout.dashboard)
 
+        mainDashboardViewModel.assembleItemTrie()
+        setSupportActionBar(findViewById(R.id.dashboard_toolbar))
         setNumberOfUsersText()
     }
 
