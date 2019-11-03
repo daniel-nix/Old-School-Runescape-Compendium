@@ -9,7 +9,7 @@ class JsonItemParser(private val context: Context) {
 
     private val itemJson = "names.json"
 
-    // returns a list of 'ItemName' and 'ItemId'
+    // returns a list of 'ItemName' and 'ItemId' from the "names.json" file //
     fun parse(): List<Pair<String, Long>> {
         val itemList = ArrayList<Pair<String, Long>>(3011)
 

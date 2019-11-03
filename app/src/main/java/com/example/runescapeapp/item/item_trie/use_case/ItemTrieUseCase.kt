@@ -1,8 +1,9 @@
 package com.example.runescapeapp.item.item_trie.use_case
 
 import android.content.Context
+import android.util.Log
 import com.example.runescapeapp.item.JsonItemParser
-import com.example.runescapeapp.item.item_trie.ItemTrieBuilder
+import com.example.runescapeapp.item.item_trie.ItemTrie
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -20,9 +21,9 @@ class ItemTrieUseCase(private val context: Context): CoroutineScope {
     fun buildItemTrie() {
         itemTrieBuildingJob = launch(Dispatchers.IO) {
             val itemList = JsonItemParser(context).parse()
-            val itemTrieBuilder = ItemTrieBuilder.getInstance()
+            val itemTrie = ItemTrie.getInstance()
             itemList.forEach {
-                itemTrieBuilder.addItem(it.first, it.second)
+                itemTrie.addItem(it.first, it.second)
             }
         }
     }
