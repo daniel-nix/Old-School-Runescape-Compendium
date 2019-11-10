@@ -19,7 +19,8 @@ class ItemTrie {
 
     private val itemTrie = ItemTrieNode()
 
-    fun addItem(itemName: String, itemId: Long) {
+    // Don't let multiple threads add to the tree at the same time //
+    @Synchronized fun addItem(itemName: String, itemId: Long) {
         var trieNode = itemTrie
         for(character in itemName) {
             with(character.toLowerCase()) {

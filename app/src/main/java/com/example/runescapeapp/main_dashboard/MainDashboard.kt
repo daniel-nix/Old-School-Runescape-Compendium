@@ -1,6 +1,8 @@
 package com.example.runescapeapp.main_dashboard
 
+import android.content.Intent
 import android.os.Bundle
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.runescapeapp.main_dashboard.viewmodel.MainDashboardViewModel
 import com.example.runescapeapp.main_dashboard.viewmodel.MainDashboardViewModelFactory
@@ -28,9 +30,11 @@ class MainDashboard: AppCompatActivity(), CoroutineScope {
 
     private fun setNumberOfUsersText() {
         launch(Dispatchers.IO) {
-            val response = mainDashboardViewModel.fetchPlayer(intent.getStringExtra("username"))
-            withContext(Dispatchers.Main) {
+            intent.getStringExtra("username")?.let {username ->
+                val response = mainDashboardViewModel.fetchPlayer(username)
+                withContext(Dispatchers.Main) {
 
+                }
             }
         }
     }

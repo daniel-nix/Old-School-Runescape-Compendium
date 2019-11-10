@@ -28,5 +28,5 @@ class ItemTrieUseCase(private val context: Context): CoroutineScope {
         }
     }
 
-    fun isTrieBuilding(): Boolean = if(itemTrieBuildingJob == null) false else itemTrieBuildingJob!!.isCompleted
+    fun isTrieBuilding(): Boolean = itemTrieBuildingJob?.isCompleted ?: false
 }
